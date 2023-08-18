@@ -17,6 +17,7 @@ const NoteList = ({
   const [editNote, setEditNote] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredNotes, setFilteredNotes] = useState<string[]>(notes);
+  const [validationError, setValidationError] = useState("");
 
   const handleEditStart = (index: number, note: string) => {
     setEditingIndex(index);
@@ -29,9 +30,14 @@ const NoteList = ({
   };
 
   const handleEditSave = (index: number) => {
-    onEdit(index, editNote);
-    setEditingIndex(-1);
-    setEditNote("");
+    if (editNote.length >= 20 && editNote.length <= 300) {
+      onEdit(index, editNote);
+      setEditingIndex(-1);
+      setEditNote("");
+      setValidationError("");
+    } else {
+      setValidationError("Note must be between 20 and 300 characters.");
+    }
   };
 
   useEffect(() => {
@@ -63,8 +69,11 @@ const NoteList = ({
                   onChange={(e) => setEditNote(e.target.value)}
                   className="w-full p-2 border rounded text-gray-700"
                   placeholder="Edit your note..."
-                  maxLength={30}
+                  maxLength={300}
                 />
+                {validationError && (
+                  <p className="text-red-500 pb-2">{validationError}</p>
+                )}
                 <div className="mt-1">
                   <button
                     onClick={() => handleEditSave(index)}

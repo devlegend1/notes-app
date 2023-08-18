@@ -35,6 +35,7 @@ const NoteForm = ({ addNote }: { addNote: (note: string) => void }) => {
         value={note}
         placeholder="Enter a new note..."
         onChange={(e) => handleNoteChange(e.target.value)}
+        maxLength={300}
       />
       {validationError && (
         <p className="text-red-500 pb-2">{validationError}</p>
